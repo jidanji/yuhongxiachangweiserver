@@ -1,0 +1,403 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="yuhongxiadataModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="DrugIngredientRelationship">
+          <Key>
+            <PropertyRef Name="RelationshipId" />
+          </Key>
+          <Property Name="RelationshipId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="DrugId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="IngredientID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="InsertTime" Type="bigint" Nullable="false" />
+          <Property Name="LastUpdateTime" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="DrugTable">
+          <Key>
+            <PropertyRef Name="DrugId" />
+          </Key>
+          <Property Name="DrugId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="DrugEnglishName" Type="nvarchar" MaxLength="200" />
+          <Property Name="DrugCommodityName" Type="nvarchar" MaxLength="200" />
+          <Property Name="DrugCommonName" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="DrugSpecification" Type="nvarchar" MaxLength="200" />
+          <Property Name="DrugMerchant" Type="nvarchar" MaxLength="200" />
+          <Property Name="DrugRemark1" Type="nvarchar" MaxLength="4000" />
+          <Property Name="DrugRemark2" Type="nvarchar" MaxLength="4000" />
+          <Property Name="InsertTime" Type="bigint" Nullable="false" />
+          <Property Name="UpdateTime" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="IngredientTable">
+          <Key>
+            <PropertyRef Name="IngredientID" />
+          </Key>
+          <Property Name="IngredientID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="IngredientCNName" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="IngredientShortName" Type="nvarchar" MaxLength="200" />
+          <Property Name="CPName" Type="nvarchar" MaxLength="200" />
+          <Property Name="USPName" Type="nvarchar" MaxLength="200" />
+          <Property Name="EPName" Type="nvarchar" MaxLength="200" />
+          <Property Name="JPName" Type="nvarchar" MaxLength="200" />
+          <Property Name="IngredientAlias" Type="nvarchar" MaxLength="200" />
+          <Property Name="InsertTime" Type="bigint" Nullable="false" />
+          <Property Name="LastUpdateTime" Type="bigint" Nullable="false" />
+        </EntityType>
+        <!--生成过程中发现错误:
+警告 6002: 表/视图“yuhongxiadata.dbo.IngredientsInWhichDrugs_View”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+        <EntityType Name="IngredientsInWhichDrugs_View">
+          <Key>
+            <PropertyRef Name="IngredientID" />
+            <PropertyRef Name="IngredientCNName" />
+            <PropertyRef Name="DrugId" />
+            <PropertyRef Name="DrugEnglishName" />
+            <PropertyRef Name="DrugCommodityName" />
+            <PropertyRef Name="DrugCommonName" />
+            <PropertyRef Name="DrugSpecification" />
+            <PropertyRef Name="DrugMerchant" />
+            <PropertyRef Name="RelationshipId" />
+            <PropertyRef Name="InsertTime" />
+            <PropertyRef Name="LastUpdateTime" />
+          </Key>
+          <Property Name="IngredientID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="IngredientCNName" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="IngredientShortName" Type="nvarchar" MaxLength="200" />
+          <Property Name="DrugId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="DrugEnglishName" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="DrugCommodityName" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="DrugCommonName" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="DrugSpecification" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="DrugMerchant" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="DrugRemark1" Type="nvarchar" MaxLength="4000" />
+          <Property Name="DrugRemark2" Type="nvarchar" MaxLength="4000" />
+          <Property Name="RelationshipId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="CPName" Type="nvarchar" MaxLength="200" />
+          <Property Name="USPName" Type="nvarchar" MaxLength="200" />
+          <Property Name="EPName" Type="nvarchar" MaxLength="200" />
+          <Property Name="JPName" Type="nvarchar" MaxLength="200" />
+          <Property Name="IngredientAlias" Type="nvarchar" MaxLength="200" />
+          <Property Name="InsertTime" Type="bigint" Nullable="false" />
+          <Property Name="LastUpdateTime" Type="bigint" Nullable="false" />
+        </EntityType>
+        <Association Name="a1">
+          <End Role="DrugTable" Type="Self.DrugTable" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="DrugIngredientRelationship" Type="Self.DrugIngredientRelationship" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DrugTable">
+              <PropertyRef Name="DrugId" />
+            </Principal>
+            <Dependent Role="DrugIngredientRelationship">
+              <PropertyRef Name="DrugId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="a2">
+          <End Role="IngredientTable" Type="Self.IngredientTable" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="DrugIngredientRelationship" Type="Self.DrugIngredientRelationship" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="IngredientTable">
+              <PropertyRef Name="IngredientID" />
+            </Principal>
+            <Dependent Role="DrugIngredientRelationship">
+              <PropertyRef Name="IngredientID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DrugTable_DrugTable">
+          <End Role="DrugTable" Type="Self.DrugTable" Multiplicity="1" />
+          <End Role="DrugTable1" Type="Self.DrugTable" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="DrugTable">
+              <PropertyRef Name="DrugId" />
+            </Principal>
+            <Dependent Role="DrugTable1">
+              <PropertyRef Name="DrugId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="yuhongxiadataModelStoreContainer">
+          <EntitySet Name="DrugIngredientRelationship" EntityType="Self.DrugIngredientRelationship" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DrugTable" EntityType="Self.DrugTable" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="IngredientTable" EntityType="Self.IngredientTable" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="IngredientsInWhichDrugs_View" EntityType="Self.IngredientsInWhichDrugs_View" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [IngredientsInWhichDrugs_View].[IngredientID] AS [IngredientID], 
+    [IngredientsInWhichDrugs_View].[IngredientCNName] AS [IngredientCNName], 
+    [IngredientsInWhichDrugs_View].[IngredientShortName] AS [IngredientShortName], 
+    [IngredientsInWhichDrugs_View].[DrugId] AS [DrugId], 
+    [IngredientsInWhichDrugs_View].[DrugEnglishName] AS [DrugEnglishName], 
+    [IngredientsInWhichDrugs_View].[DrugCommodityName] AS [DrugCommodityName], 
+    [IngredientsInWhichDrugs_View].[DrugCommonName] AS [DrugCommonName], 
+    [IngredientsInWhichDrugs_View].[DrugSpecification] AS [DrugSpecification], 
+    [IngredientsInWhichDrugs_View].[DrugMerchant] AS [DrugMerchant], 
+    [IngredientsInWhichDrugs_View].[DrugRemark1] AS [DrugRemark1], 
+    [IngredientsInWhichDrugs_View].[DrugRemark2] AS [DrugRemark2], 
+    [IngredientsInWhichDrugs_View].[RelationshipId] AS [RelationshipId], 
+    [IngredientsInWhichDrugs_View].[CPName] AS [CPName], 
+    [IngredientsInWhichDrugs_View].[USPName] AS [USPName], 
+    [IngredientsInWhichDrugs_View].[EPName] AS [EPName], 
+    [IngredientsInWhichDrugs_View].[JPName] AS [JPName], 
+    [IngredientsInWhichDrugs_View].[IngredientAlias] AS [IngredientAlias], 
+    [IngredientsInWhichDrugs_View].[InsertTime] AS [InsertTime], 
+    [IngredientsInWhichDrugs_View].[LastUpdateTime] AS [LastUpdateTime]
+    FROM [dbo].[IngredientsInWhichDrugs_View] AS [IngredientsInWhichDrugs_View]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="a1" Association="Self.a1">
+            <End Role="DrugTable" EntitySet="DrugTable" />
+            <End Role="DrugIngredientRelationship" EntitySet="DrugIngredientRelationship" />
+          </AssociationSet>
+          <AssociationSet Name="a2" Association="Self.a2">
+            <End Role="IngredientTable" EntitySet="IngredientTable" />
+            <End Role="DrugIngredientRelationship" EntitySet="DrugIngredientRelationship" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DrugTable_DrugTable" Association="Self.FK_DrugTable_DrugTable">
+            <End Role="DrugTable" EntitySet="DrugTable" />
+            <End Role="DrugTable1" EntitySet="DrugTable" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="yuhongxiadataModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="yuhongxiadataEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="DrugIngredientRelationship" EntityType="yuhongxiadataModel.DrugIngredientRelationship" />
+          <EntitySet Name="DrugTable" EntityType="yuhongxiadataModel.DrugTable" />
+          <EntitySet Name="IngredientTable" EntityType="yuhongxiadataModel.IngredientTable" />
+          <EntitySet Name="IngredientsInWhichDrugs_View" EntityType="yuhongxiadataModel.IngredientsInWhichDrugs_View" />
+          <AssociationSet Name="a1" Association="yuhongxiadataModel.a1">
+            <End Role="DrugTable" EntitySet="DrugTable" />
+            <End Role="DrugIngredientRelationship" EntitySet="DrugIngredientRelationship" />
+          </AssociationSet>
+          <AssociationSet Name="a2" Association="yuhongxiadataModel.a2">
+            <End Role="IngredientTable" EntitySet="IngredientTable" />
+            <End Role="DrugIngredientRelationship" EntitySet="DrugIngredientRelationship" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DrugTable_DrugTable" Association="yuhongxiadataModel.FK_DrugTable_DrugTable">
+            <End Role="DrugTable" EntitySet="DrugTable" />
+            <End Role="DrugTable1" EntitySet="DrugTable" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="DrugIngredientRelationship">
+          <Key>
+            <PropertyRef Name="RelationshipId" />
+          </Key>
+          <Property Name="RelationshipId" Type="Guid" Nullable="false" />
+          <Property Name="DrugId" Type="Guid" Nullable="false" />
+          <Property Name="IngredientID" Type="Guid" Nullable="false" />
+          <Property Name="InsertTime" Type="Int64" Nullable="false" />
+          <Property Name="LastUpdateTime" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="DrugTable" Relationship="yuhongxiadataModel.a1" FromRole="DrugIngredientRelationship" ToRole="DrugTable" />
+          <NavigationProperty Name="IngredientTable" Relationship="yuhongxiadataModel.a2" FromRole="DrugIngredientRelationship" ToRole="IngredientTable" />
+        </EntityType>
+        <EntityType Name="DrugTable">
+          <Key>
+            <PropertyRef Name="DrugId" />
+          </Key>
+          <Property Name="DrugId" Type="Guid" Nullable="false" />
+          <Property Name="DrugEnglishName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="DrugCommodityName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="DrugCommonName" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="DrugSpecification" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="DrugMerchant" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="DrugRemark1" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="DrugRemark2" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="InsertTime" Type="Int64" Nullable="false" />
+          <Property Name="UpdateTime" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="DrugIngredientRelationship" Relationship="yuhongxiadataModel.a1" FromRole="DrugTable" ToRole="DrugIngredientRelationship" />
+          <NavigationProperty Name="DrugTable1" Relationship="yuhongxiadataModel.FK_DrugTable_DrugTable" FromRole="DrugTable" ToRole="DrugTable1" />
+          <NavigationProperty Name="DrugTable2" Relationship="yuhongxiadataModel.FK_DrugTable_DrugTable" FromRole="DrugTable1" ToRole="DrugTable" />
+        </EntityType>
+        <EntityType Name="IngredientTable">
+          <Key>
+            <PropertyRef Name="IngredientID" />
+          </Key>
+          <Property Name="IngredientID" Type="Guid" Nullable="false" />
+          <Property Name="IngredientCNName" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="IngredientShortName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="CPName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="USPName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="EPName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="JPName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="IngredientAlias" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="InsertTime" Type="Int64" Nullable="false" />
+          <Property Name="LastUpdateTime" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="DrugIngredientRelationship" Relationship="yuhongxiadataModel.a2" FromRole="IngredientTable" ToRole="DrugIngredientRelationship" />
+        </EntityType>
+        <EntityType Name="IngredientsInWhichDrugs_View">
+          <Key>
+            <PropertyRef Name="IngredientID" />
+            <PropertyRef Name="IngredientCNName" />
+            <PropertyRef Name="DrugId" />
+            <PropertyRef Name="DrugEnglishName" />
+            <PropertyRef Name="DrugCommodityName" />
+            <PropertyRef Name="DrugCommonName" />
+            <PropertyRef Name="DrugSpecification" />
+            <PropertyRef Name="DrugMerchant" />
+            <PropertyRef Name="RelationshipId" />
+            <PropertyRef Name="InsertTime" />
+            <PropertyRef Name="LastUpdateTime" />
+          </Key>
+          <Property Name="IngredientID" Type="Guid" Nullable="false" />
+          <Property Name="IngredientCNName" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="IngredientShortName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="DrugId" Type="Guid" Nullable="false" />
+          <Property Name="DrugEnglishName" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="DrugCommodityName" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="DrugCommonName" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="DrugSpecification" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="DrugMerchant" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="DrugRemark1" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="DrugRemark2" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="RelationshipId" Type="Guid" Nullable="false" />
+          <Property Name="CPName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="USPName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="EPName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="JPName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="IngredientAlias" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="InsertTime" Type="Int64" Nullable="false" />
+          <Property Name="LastUpdateTime" Type="Int64" Nullable="false" />
+        </EntityType>
+        <Association Name="a1">
+          <End Type="yuhongxiadataModel.DrugTable" Role="DrugTable" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="yuhongxiadataModel.DrugIngredientRelationship" Role="DrugIngredientRelationship" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DrugTable">
+              <PropertyRef Name="DrugId" />
+            </Principal>
+            <Dependent Role="DrugIngredientRelationship">
+              <PropertyRef Name="DrugId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="a2">
+          <End Type="yuhongxiadataModel.IngredientTable" Role="IngredientTable" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="yuhongxiadataModel.DrugIngredientRelationship" Role="DrugIngredientRelationship" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="IngredientTable">
+              <PropertyRef Name="IngredientID" />
+            </Principal>
+            <Dependent Role="DrugIngredientRelationship">
+              <PropertyRef Name="IngredientID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DrugTable_DrugTable">
+          <End Type="yuhongxiadataModel.DrugTable" Role="DrugTable" Multiplicity="1" />
+          <End Type="yuhongxiadataModel.DrugTable" Role="DrugTable1" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="DrugTable">
+              <PropertyRef Name="DrugId" />
+            </Principal>
+            <Dependent Role="DrugTable1">
+              <PropertyRef Name="DrugId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="yuhongxiadataModelStoreContainer" CdmEntityContainer="yuhongxiadataEntities">
+          <EntitySetMapping Name="DrugIngredientRelationship">
+            <EntityTypeMapping TypeName="yuhongxiadataModel.DrugIngredientRelationship">
+              <MappingFragment StoreEntitySet="DrugIngredientRelationship">
+                <ScalarProperty Name="LastUpdateTime" ColumnName="LastUpdateTime" />
+                <ScalarProperty Name="InsertTime" ColumnName="InsertTime" />
+                <ScalarProperty Name="IngredientID" ColumnName="IngredientID" />
+                <ScalarProperty Name="DrugId" ColumnName="DrugId" />
+                <ScalarProperty Name="RelationshipId" ColumnName="RelationshipId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DrugTable">
+            <EntityTypeMapping TypeName="yuhongxiadataModel.DrugTable">
+              <MappingFragment StoreEntitySet="DrugTable">
+                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+                <ScalarProperty Name="InsertTime" ColumnName="InsertTime" />
+                <ScalarProperty Name="DrugRemark2" ColumnName="DrugRemark2" />
+                <ScalarProperty Name="DrugRemark1" ColumnName="DrugRemark1" />
+                <ScalarProperty Name="DrugMerchant" ColumnName="DrugMerchant" />
+                <ScalarProperty Name="DrugSpecification" ColumnName="DrugSpecification" />
+                <ScalarProperty Name="DrugCommonName" ColumnName="DrugCommonName" />
+                <ScalarProperty Name="DrugCommodityName" ColumnName="DrugCommodityName" />
+                <ScalarProperty Name="DrugEnglishName" ColumnName="DrugEnglishName" />
+                <ScalarProperty Name="DrugId" ColumnName="DrugId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="IngredientTable">
+            <EntityTypeMapping TypeName="yuhongxiadataModel.IngredientTable">
+              <MappingFragment StoreEntitySet="IngredientTable">
+                <ScalarProperty Name="LastUpdateTime" ColumnName="LastUpdateTime" />
+                <ScalarProperty Name="InsertTime" ColumnName="InsertTime" />
+                <ScalarProperty Name="IngredientAlias" ColumnName="IngredientAlias" />
+                <ScalarProperty Name="JPName" ColumnName="JPName" />
+                <ScalarProperty Name="EPName" ColumnName="EPName" />
+                <ScalarProperty Name="USPName" ColumnName="USPName" />
+                <ScalarProperty Name="CPName" ColumnName="CPName" />
+                <ScalarProperty Name="IngredientShortName" ColumnName="IngredientShortName" />
+                <ScalarProperty Name="IngredientCNName" ColumnName="IngredientCNName" />
+                <ScalarProperty Name="IngredientID" ColumnName="IngredientID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="IngredientsInWhichDrugs_View">
+            <EntityTypeMapping TypeName="yuhongxiadataModel.IngredientsInWhichDrugs_View">
+              <MappingFragment StoreEntitySet="IngredientsInWhichDrugs_View">
+                <ScalarProperty Name="LastUpdateTime" ColumnName="LastUpdateTime" />
+                <ScalarProperty Name="InsertTime" ColumnName="InsertTime" />
+                <ScalarProperty Name="IngredientAlias" ColumnName="IngredientAlias" />
+                <ScalarProperty Name="JPName" ColumnName="JPName" />
+                <ScalarProperty Name="EPName" ColumnName="EPName" />
+                <ScalarProperty Name="USPName" ColumnName="USPName" />
+                <ScalarProperty Name="CPName" ColumnName="CPName" />
+                <ScalarProperty Name="RelationshipId" ColumnName="RelationshipId" />
+                <ScalarProperty Name="DrugRemark2" ColumnName="DrugRemark2" />
+                <ScalarProperty Name="DrugRemark1" ColumnName="DrugRemark1" />
+                <ScalarProperty Name="DrugMerchant" ColumnName="DrugMerchant" />
+                <ScalarProperty Name="DrugSpecification" ColumnName="DrugSpecification" />
+                <ScalarProperty Name="DrugCommonName" ColumnName="DrugCommonName" />
+                <ScalarProperty Name="DrugCommodityName" ColumnName="DrugCommodityName" />
+                <ScalarProperty Name="DrugEnglishName" ColumnName="DrugEnglishName" />
+                <ScalarProperty Name="DrugId" ColumnName="DrugId" />
+                <ScalarProperty Name="IngredientShortName" ColumnName="IngredientShortName" />
+                <ScalarProperty Name="IngredientCNName" ColumnName="IngredientCNName" />
+                <ScalarProperty Name="IngredientID" ColumnName="IngredientID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="无" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

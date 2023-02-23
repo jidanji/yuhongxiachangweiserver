@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="98ee4ac29a184b988478868c2912a913" Name="Diagram1">
+        <EntityTypeShape EntityType="yuhongxiadataModel.DrugIngredientRelationship" Width="1.5" PointX="3" PointY="1.5" />
+        <EntityTypeShape EntityType="yuhongxiadataModel.DrugTable" Width="1.5" PointX="0.75" PointY="1" />
+        <EntityTypeShape EntityType="yuhongxiadataModel.IngredientTable" Width="1.5" PointX="0.75" PointY="5.125" />
+        <EntityTypeShape EntityType="yuhongxiadataModel.IngredientsInWhichDrugs_View" Width="1.5" PointX="2.75" PointY="4.75" />
+        <AssociationConnector Association="yuhongxiadataModel.a1" />
+        <AssociationConnector Association="yuhongxiadataModel.a2" />
+        <AssociationConnector Association="yuhongxiadataModel.FK_DrugTable_DrugTable" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
